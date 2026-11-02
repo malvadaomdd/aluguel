@@ -1,0 +1,6 @@
+# Define o projeto local de configuração das funções do Aluguel.
+project_id = "aluguel"
+# O webhook público e o cron validam suas próprias assinaturas; demais operações verificam o usuário Auth.
+[functions.rental-api]
+# A verificação manual é necessária também para o webhook do Mercado Pago sem JWT.
+verify_jwt = false

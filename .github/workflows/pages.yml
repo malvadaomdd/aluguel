@@ -1,0 +1,56 @@
+# Publica somente a interface estática; senhas, PHP e banco não entram no GitHub Pages.
+name: Publicar Aluguel no GitHub Pages
+# Atualiza a interface ao enviar alterações para a branch principal ou por execução manual.
+on:
+  # Permite publicar pela aba Actions.
+  workflow_dispatch:
+  # Publica somente mudanças que afetam a interface ou este fluxo.
+  push:
+    # Usa a branch principal do projeto.
+    branches: [main]
+    # Evita publicar por mudanças apenas nos dados ou no código PHP local.
+    paths: ['web/**', '.github/workflows/pages.yml']
+# Limita as permissões às necessárias para publicar o artefato estático.
+permissions:
+  # Lê os fontes da interface.
+  contents: read
+  # Publica o site no serviço Pages.
+  pages: write
+  # Autoriza o trabalho de deploy pelo mecanismo oficial.
+  id-token: write
+# Evita duas publicações simultâneas do mesmo site.
+concurrency:
+  # Mantém um único grupo para a publicação.
+  group: aluguel-pages
+  # Preserva uma publicação em andamento até ela concluir.
+  cancel-in-progress: false
+# Declara o trabalho responsável pela publicação.
+jobs:
+  # Envia apenas a pasta web, sem executar PHP.
+  deploy:
+    # Usa runner Linux padrão para compactar e publicar arquivos estáticos.
+    runs-on: ubuntu-latest
+    # Identifica o ambiente e o endereço exibido na execução.
+    environment:
+      # Usa o ambiente oficial do GitHub Pages.
+      name: github-pages
+      # Mostra a URL literal devolvida pelo deploy oficial.
+      url: ${{ steps.deployment.outputs.page_url }}
+    # Executa checkout, preparação e publicação.
+    steps:
+      # Baixa os arquivos versionados.
+      - uses: actions/checkout@v4
+      # Prepara o ambiente de publicação do repositório.
+      - uses: actions/configure-pages@v5
+      # Compacta somente o diretório público estático.
+      - uses: actions/upload-pages-artifact@v3
+        # Define a origem sem incluir arquivos de banco ou servidor.
+        with:
+          # Esta é a única pasta publicada na internet.
+          path: web
+      # Publica o artefato pelo serviço oficial.
+      - name: Publicar
+        # Identifica a saída que contém o endereço do site.
+        id: deployment
+        # Conclui a publicação no Pages.
+        uses: actions/deploy-pages@v4

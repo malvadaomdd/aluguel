@@ -1,0 +1,39 @@
+<!doctype html>
+<!-- Interface estática para GitHub Pages; operações privilegiadas ficam no Supabase. -->
+<html lang="pt-BR">
+<!-- Declara identidade, escala do celular e recursos relativos ao caminho do repositório. -->
+<head>
+<!-- Preserva acentos em nomes, regras e comprovantes. -->
+<meta charset="utf-8">
+<!-- Adapta o portal ao iPhone, Android e computador. -->
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<!-- Mantém a barra do navegador no tema preto. -->
+<meta name="theme-color" content="#09090d">
+<!-- Identifica o sistema nas abas e instalação. -->
+<title>Aluguel — Janete Nascimento Santana</title>
+<!-- Usa apenas estilos do próprio projeto. -->
+<link rel="stylesheet" href="./assets/style.css?v=pages-1">
+<!-- Exibe o ícone também na instalação pelo Safari. -->
+<link rel="apple-touch-icon" href="./assets/icon-192.png">
+<!-- Define a identidade PWA com caminhos compatíveis com GitHub Pages. -->
+<link rel="manifest" href="./manifest.webmanifest">
+<!-- Usa versão fixa do SDK oficial Supabase; nenhuma chave privilegiada é carregada. -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.js" defer></script>
+<!-- Carrega somente URL e chave pública do projeto. -->
+<script src="./config.js" defer></script>
+<!-- Executa login, formulários e consultas autenticadas. -->
+<script src="./assets/app.js" defer></script>
+<!-- Finaliza os metadados da página. -->
+</head>
+<!-- Apresenta menu compartilhado e área de conteúdo dinâmica. -->
+<body>
+<!-- Mantém atalhos principais sem navegar para arquivos PHP. -->
+<aside class="sidebar"><a class="brand" href="./">a<span>Aluguel<small>GESTÃO DE ESPAÇOS</small></span></a><div class="workspace">JANETE <span>● Seu espaço</span></div><nav><button data-view="dashboard">Visão geral</button><button data-view="contracts">Contratos e antecipação</button><button data-view="credits">Descontos e entregas</button><button data-view="support">Suporte</button><button data-view="rules">Regras do aluguel</button><button data-view="downloads">Aplicativos</button></nav><div class="side-note">Seu espaço.<br>Suas contas em dia.</div><div id="account"></div></aside>
+<!-- Identifica a conta e mantém mensagens de retorno acessíveis. -->
+<main><header><div><span class="eyebrow">SEU ESPAÇO, TUDO EM DIA</span><h1 id="greeting">Um lugar para cuidar do seu aluguel.</h1><p>Faturas, comprovantes e acordos no mesmo lugar.</p></div><button data-command="refresh" class="secondary">Atualizar</button></header><div id="status" role="status" aria-live="polite"></div><div id="content"><section class="card"><h2>Preparando o portal…</h2><p>Carregando acesso seguro.</p></section></div><footer>Proprietária: Janete Nascimento Santana · Seu filho Edson Santana de Oliveira auxilia nos recebimentos.<br>Parada Morabi · Avenida Hélio de Oliveira · Quadra 306, Lote 06, Número 06 · CEP 25265-135 · Duque de Caxias · Rio de Janeiro.</footer></main>
+<!-- Orienta navegação quando scripts estiverem bloqueados. -->
+<noscript>Ative o JavaScript para acessar o portal com autenticação Supabase.</noscript>
+<!-- Finaliza a estrutura visível. -->
+</body>
+<!-- Finaliza o documento. -->
+</html>

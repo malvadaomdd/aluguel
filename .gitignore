@@ -1,0 +1,22 @@
+# Protege credenciais, dados pessoais, dependências e artefatos locais.
+/.env
+/storage/*
+!/storage/.gitkeep
+/vendor/
+/work/
+/apps/**/build/
+/apps/**/.gradle/
+
+# Mantém arquivos e projetos gerados pelo Xcode fora dos fontes.
+/apps/ios/*.xcodeproj/
+/apps/ios/*.xcworkspace/
+/dist/
+
+# Ignora metadados locais do CLI e ambientes privados das funções.
+/supabase/.temp/
+/supabase/.branches/
+/supabase/functions/**/.env*
+/node_modules/
+
+# A pasta de upload é uma cópia preparada; evite versioná-la dentro da raiz de desenvolvimento.
+/ENVIAR_AO_GITHUB/

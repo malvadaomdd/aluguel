@@ -1,0 +1,68 @@
+# Compila o iPhone sob demanda sem assinar ou publicar automaticamente.
+name: iPhone - compilar aplicativo
+# Evita consumo inesperado de minutos em cada alteração.
+on:
+  # Habilita o botão Run workflow na aba Actions.
+  workflow_dispatch:
+# Concede apenas leitura dos fontes.
+permissions:
+  # Necessário ao checkout do repositório.
+  contents: read
+# Declara o trabalho de compilação.
+jobs:
+  # Produz arquivo Xcode para a etapa posterior de assinatura Apple.
+  build-ios:
+    # Usa macOS com Xcode, indisponível no Windows.
+    runs-on: macos-15
+    # Limita o tempo de execução em caso de falha.
+    timeout-minutes: 30
+    # Recebe somente o domínio público.
+    env:
+      # Permite informar o domínio no próprio aplicativo se esta variável estiver vazia.
+      PORTAL_URL: ${{ vars.ALUGUEL_PORTAL_URL }}
+    # Mantém os comandos na pasta do aplicativo.
+    defaults:
+      # Define o diretório de execução do shell.
+      run:
+        # Seleciona a pasta com project.yml.
+        working-directory: apps/ios
+    # Prepara, compila e disponibiliza o artefato.
+    steps:
+      # Baixa os fontes sem copiar o banco ou as credenciais locais.
+      - name: Baixar fontes
+        # Usa a ação oficial de checkout.
+        uses: actions/checkout@v4
+      # Instala o gerador de projeto no runner.
+      - name: Instalar XcodeGen
+        # Reutiliza uma instalação existente quando disponível.
+        run: brew list xcodegen >/dev/null 2>&1 || brew install xcodegen
+      # Gera o projeto a partir do YAML versionado.
+      - name: Gerar projeto Xcode
+        # Usa o arquivo project.yml da pasta corrente.
+        run: xcodegen generate
+      # Compila para dispositivo sem produzir um IPA falsamente anunciado como instalável.
+      - name: Compilar arquivo iOS sem assinatura
+        # Preserva comandos separados e protege o domínio como argumento único.
+        run: |
+          # Interrompe ao primeiro erro.
+          set -euo pipefail
+          # Mantém o arquivo e intermediários dentro da pasta do projeto.
+          xcodebuild archive -project Aluguel.xcodeproj -scheme Aluguel -configuration Release -destination 'generic/platform=iOS' -archivePath build/Aluguel.xcarchive -derivedDataPath build/DerivedData CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO ALUGUEL_PORTAL_URL="$PORTAL_URL"
+          # Confirma a presença do aplicativo antes de compactar.
+          test -d build/Aluguel.xcarchive/Products/Applications/Aluguel.app
+          # Compacta o arquivo Xcode sem alegar assinatura Apple.
+          ditto -c -k --keepParent build/Aluguel.xcarchive build/Aluguel-iPhone-sem-assinatura.xcarchive.zip
+      # Disponibiliza somente o resultado da compilação.
+      - name: Disponibilizar arquivo Xcode
+        # Usa a ação oficial de artefatos.
+        uses: actions/upload-artifact@v4
+        # Seleciona arquivo exato e prazo de retenção.
+        with:
+          # Identifica explicitamente a ausência de assinatura.
+          name: Aluguel-iPhone-sem-assinatura
+          # Caminho relativo à raiz do checkout.
+          path: apps/ios/build/Aluguel-iPhone-sem-assinatura.xcarchive.zip
+          # Rejeita builds que não geraram o arquivo.
+          if-no-files-found: error
+          # Mantém o download disponível por duas semanas.
+          retention-days: 14

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Declara a finalidade do armazenamento de preferências usado por AppStorage. -->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- Usa o formato de manifesto reconhecido pelo Xcode. -->
+<plist version="1.0">
+<!-- Agrupa as declarações de API nativa deste aplicativo. -->
+<dict>
+    <!-- Identifica as categorias de APIs de motivo obrigatório usadas pelos fontes. -->
+    <key>NSPrivacyAccessedAPITypes</key>
+    <!-- Lista somente o acesso às preferências do próprio aplicativo. -->
+    <array>
+        <!-- Descreve o uso de UserDefaults por AppStorage para guardar o domínio. -->
+        <dict>
+            <!-- Seleciona a categoria de preferências locais. -->
+            <key>NSPrivacyAccessedAPIType</key>
+            <!-- Não acessa preferências de outros aplicativos ou grupos compartilhados. -->
+            <string>NSPrivacyAccessedAPICategoryUserDefaults</string>
+            <!-- Registra o motivo de uso permitido para preferências do próprio app. -->
+            <key>NSPrivacyAccessedAPITypeReasons</key>
+            <!-- Indica leitura e gravação restritas ao domínio local do aplicativo. -->
+            <array><string>CA92.1</string></array>
+        <!-- Finaliza a categoria declarada. -->
+        </dict>
+    <!-- Finaliza a lista de APIs declaradas. -->
+    </array>
+<!-- Finaliza as propriedades do manifesto nativo. -->
+</dict>
+<!-- Finaliza o arquivo de propriedades. -->
+</plist>

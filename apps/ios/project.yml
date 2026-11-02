@@ -1,0 +1,62 @@
+# Gera o projeto Xcode com portal integrado, comprovantes e ícones locais.
+name: Aluguel
+# Configura identificador e versão mínima do iOS.
+options:
+  deploymentTarget:
+    iOS: '16.4'
+# Define o aplicativo com geração automática do Info.plist.
+targets:
+  Aluguel:
+    type: application
+    platform: iOS
+    # Compila somente fontes e ícones, sem copiar arquivos privados.
+    sources: [AluguelApp.swift, PortalView.swift, PortalWebView.swift, Assets.xcassets, PrivacyInfo.xcprivacy]
+    # Gera propriedades públicas do aplicativo a partir desta configuração.
+    info:
+      # Mantém o arquivo gerado dentro da pasta de build.
+      path: build/Info.plist
+      # Configura identidade, lançamento, orientação e domínio.
+      properties:
+        # Define o nome exibido no iPhone.
+        CFBundleDisplayName: Aluguel
+        # Usa lançamento gerenciado pelo sistema.
+        UILaunchScreen: {}
+        # Permite orientação vertical e horizontal.
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait, UIInterfaceOrientationLandscapeLeft, UIInterfaceOrientationLandscapeRight]
+        # Embute somente o domínio público, nunca credenciais.
+        AluguelPortalURL: $(ALUGUEL_PORTAL_URL)
+        # Explica a câmera apenas se o usuário escolher fotografar um comprovante no seletor.
+        NSCameraUsageDescription: Permite fotografar comprovantes para enviar à administração do aluguel.
+        # Explica a seleção de imagens quando o sistema solicitar acesso à biblioteca.
+        NSPhotoLibraryUsageDescription: Permite selecionar imagens de comprovantes para anexar ao pedido.
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: br.com.malvadao.aluguel
+        # O arquivo de propriedades é gerado pelo XcodeGen.
+        GENERATE_INFOPLIST_FILE: NO
+        # Mantém compatibilidade sem habilitar verificações de concorrência Swift 6.
+        SWIFT_VERSION: '5.0'
+        # Seleciona o catálogo de ícones sem transparência.
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        # Destina esta versão nativa ao iPhone.
+        TARGETED_DEVICE_FAMILY: '1'
+        # Permite selecionar um time Apple posteriormente no Xcode.
+        CODE_SIGN_STYLE: Automatic
+        # O usuário pode informar o domínio no aplicativo se ainda estiver vazio.
+        ALUGUEL_PORTAL_URL: ''
+        MARKETING_VERSION: '1.0.0'
+        CURRENT_PROJECT_VERSION: 1
+# Compartilha o esquema para compilação automatizada.
+schemes:
+  # Usa o mesmo esquema localmente e no GitHub Actions.
+  Aluguel:
+    # Seleciona os alvos compilados.
+    build:
+      # Inclui o alvo principal em todas as operações.
+      targets:
+        # Compila o aplicativo Aluguel.
+        Aluguel: all
+    # Define otimização de distribuição.
+    archive:
+      # Gera o arquivo em Release.
+      config: Release
